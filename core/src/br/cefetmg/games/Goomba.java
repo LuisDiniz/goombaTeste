@@ -14,18 +14,18 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
  */
 public class Goomba {
     
-    private Sprite goomba;
-    private Texture player, spriteSheet;
-    private Animation animacaoCorrente, animacaoEsquerda, animacaoDireita, animacaoCima, animacaoBaixo;
-    private TextureRegion[][] quadrosAnimacao;
-    private int x,y;
+    public Sprite goombaSprite;
+    public Texture player, spriteSheet;
+    public Animation animacaoCorrente, animacaoEsquerda, animacaoDireita, animacaoCima, animacaoBaixo;
+    public TextureRegion[][] quadrosAnimacao;
+    public int x,y;
     float tempoAnimacao;
     
     public Goomba(Texture player, Texture spriteSheet) {
         // cria as regiões para cada quadro de animação
         // cria e configura as animações (andar para esquerda, direita, 
         // cima, baixo)
-        goomba = new Sprite(player);
+        goombaSprite = new Sprite(player);
         this.spriteSheet = spriteSheet; 
         quadrosAnimacao = TextureRegion.split(spriteSheet, 21, 24);
         // Define as animações
@@ -68,7 +68,7 @@ public class Goomba {
         // Inicializa as variáveis
         tempoAnimacao = 0;
         x = 0;
-        y = 0;
+        y = 12;
         animacaoCorrente = animacaoBaixo;
     }
     
@@ -79,24 +79,24 @@ public class Goomba {
             animacaoCorrente = animacaoEsquerda;
             if (x > 0){
                 x = x - 1;
-                goomba.setPosition(x, y);
+                goombaSprite.setPosition(x, y);
             }
             //velocidade.x = -1;
         }
         // verifica se a seta direita está pressionada
         else if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
             animacaoCorrente = animacaoDireita;
-            if (x < Gdx.graphics.getWidth() - goomba.getWidth()){
+            if (x < Gdx.graphics.getWidth() - goombaSprite.getWidth()){
                 x = x + 1;
-                goomba.setPosition(x, y);
+                goombaSprite.setPosition(x, y);
             }
         }
         // verifica se a seta para cima está pressionada
         else if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
             animacaoCorrente = animacaoCima;
-            if (y < Gdx.graphics.getHeight() - goomba.getHeight()){
+            if (y < Gdx.graphics.getHeight() - goombaSprite.getHeight()){
                 y = y + 1;
-                goomba.setPosition(x, y);
+                goombaSprite.setPosition(x, y);
             }
         }
         // verifica se a seta para baixa está pressionada
@@ -104,7 +104,7 @@ public class Goomba {
             animacaoCorrente = animacaoBaixo;
             if (y > 0){
                 y = y - 1;
-                goomba.setPosition(x, y);
+                goombaSprite.setPosition(x, y);
             }
         }
         
@@ -114,6 +114,6 @@ public class Goomba {
         tempoAnimacao = tempoAnimacao + Gdx.graphics.getDeltaTime();
         TextureRegion currentFrame = animacaoCorrente.getKeyFrame(tempoAnimacao);
         batch.draw(currentFrame,x,y);// O Sprite "se desenha"
-        //goomba.draw(batch);
+        //goombaSprite.draw(batch);
     }
 }
