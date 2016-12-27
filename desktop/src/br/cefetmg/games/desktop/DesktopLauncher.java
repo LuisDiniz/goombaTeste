@@ -7,7 +7,7 @@ import br.cefetmg.games.Game;
 public class DesktopLauncher {
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-                config.width = 300;
+                config.width = 256;
                 config.height = 200;
 		new LwjglApplication(new Game(), config);
 	}

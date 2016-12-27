@@ -67,7 +67,7 @@ public class Goomba {
         
         // Inicializa as variáveis
         tempoAnimacao = 0;
-        x = 0;
+        x = (int) ((Gdx.graphics.getWidth() / 2f) - goombaSprite.getWidth());
         y = 12;
         animacaoCorrente = animacaoBaixo;
     }

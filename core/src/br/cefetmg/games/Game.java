@@ -48,14 +48,15 @@ public class Game extends ApplicationAdapter {
         // verifica se a seta direita está pressionada
         else if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
             goomba.animacaoCorrente = goomba.animacaoDireita;
-            //if (goomba.x < Gdx.graphics.getWidth() - goomba.goombaSprite.getWidth()){
             if (goomba.x < (map.getWidth() - goomba.goombaSprite.getWidth() - camera.viewportWidth / 2f)){ //??? Como a Camera está sempre centralizada tem que tirar metade ???
+            //if (goomba.x < (map.getWidth() - goomba.goombaSprite.getWidth())){
                 goomba.x = goomba.x + 1;
                 System.out.println("Camera x: " + camera.position.x);                
                 System.out.println("Goomba x:" + goomba.x);
                                
                 // Verifica se o goomba está na metade da camera
-                if ((goomba.x >= (camera.position.x /2f)) && ((camera.position.x + camera.viewportWidth) < map.getWidth())){
+                //if ((goomba.x >= (camera.position.x /2f)) && ((camera.position.x + camera.viewportWidth) < map.getWidth())){
+                if ((camera.position.x + camera.viewportWidth) < map.getWidth()){
                     camera.position.x = camera.position.x + 1;
                 }
                 goomba.goombaSprite.setPosition(goomba.x, goomba.y);
