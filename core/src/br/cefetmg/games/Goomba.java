@@ -72,48 +72,12 @@ public class Goomba {
         animacaoCorrente = animacaoBaixo;
     }
     
-    public void update() {
-
-        // verifica se a seta ← está pressionada
-        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-            animacaoCorrente = animacaoEsquerda;
-            if (x > 0){
-                x = x - 1;
-                goombaSprite.setPosition(x, y);
-            }
-            //velocidade.x = -1;
-        }
-        // verifica se a seta direita está pressionada
-        else if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-            animacaoCorrente = animacaoDireita;
-            if (x < Gdx.graphics.getWidth() - goombaSprite.getWidth()){
-                x = x + 1;
-                goombaSprite.setPosition(x, y);
-            }
-        }
-        // verifica se a seta para cima está pressionada
-        else if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
-            animacaoCorrente = animacaoCima;
-            if (y < Gdx.graphics.getHeight() - goombaSprite.getHeight()){
-                y = y + 1;
-                goombaSprite.setPosition(x, y);
-            }
-        }
-        // verifica se a seta para baixa está pressionada
-        else if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
-            animacaoCorrente = animacaoBaixo;
-            if (y > 0){
-                y = y - 1;
-                goombaSprite.setPosition(x, y);
-            }
-        }
-        
-    }
-    
     public void render(SpriteBatch batch) {
         tempoAnimacao = tempoAnimacao + Gdx.graphics.getDeltaTime();
         TextureRegion currentFrame = animacaoCorrente.getKeyFrame(tempoAnimacao);
         batch.draw(currentFrame,x,y);// O Sprite "se desenha"
         //goombaSprite.draw(batch);
     }
+    
+    
 }
