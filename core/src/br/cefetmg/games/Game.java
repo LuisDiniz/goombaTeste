@@ -17,6 +17,7 @@ public class Game extends ApplicationAdapter {
     
     private SpriteBatch batch;
     private Goomba goomba, princesa;
+    private Pedra pedra;
     private Texture map, spriteSheet, texturaPlayer, texturaPrincesa, setas;
     private OrthographicCamera camera;    
     private boolean comecoJogo = true, apareceSeta = true;
@@ -49,49 +50,58 @@ public class Game extends ApplicationAdapter {
             moverCameraObjetivoJogador(princesa.x, princesa.y);
             comecoJogo = false;
         }
-        
-        // verifica se a seta ← está pressionada
-        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {          
-                       
-            goomba.animacaoCorrente = goomba.animacaoEsquerda;
-            if (goomba.x > 0){
-                goomba.x = goomba.x - 1;
-                camera.position.x = camera.position.x - 1;
-                goomba.goombaSprite.setPosition(goomba.x, goomba.y);
-            }
-        }
-        // verifica se a seta direita está pressionada
-        else if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-            goomba.animacaoCorrente = goomba.animacaoDireita;
-            if (goomba.x < (map.getWidth() - goomba.goombaSprite.getWidth() - camera.viewportWidth / 2f)){ //??? Como a Camera está sempre centralizada tem que tirar metade ???
-            //if (goomba.x < (map.getWidth() - goomba.goombaSprite.getWidth())){
-                goomba.x = goomba.x + 1;
-                               
-                // Verifica se o goomba está na metade da camera
-                //if ((goomba.x >= (camera.position.x /2f)) && ((camera.position.x + camera.viewportWidth) < map.getWidth())){
-                if ((camera.position.x + camera.viewportWidth) < map.getWidth()){
-                    camera.position.x = camera.position.x + 1;
+        // Só reconhece as ações do jogador após o término da animação inicial
+        else {   
+            //System.out.println(goomba.x);
+            // verifica se a seta ← está pressionada
+            if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {          
+
+                goomba.animacaoCorrente = goomba.animacaoEsquerda;
+                if (goomba.x > 0){
+                    goomba.x = goomba.x - 1;
+                    camera.position.x = camera.position.x - 1;
+                    goomba.goombaSprite.setPosition(goomba.x, goomba.y);
                 }
-                goomba.goombaSprite.setPosition(goomba.x, goomba.y);
             }
-        }
-        // verifica se a seta para cima está pressionada
-        else if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
-            goomba.animacaoCorrente = goomba.animacaoCima;
-            if (goomba.y < Gdx.graphics.getHeight() - goomba.goombaSprite.getHeight()){
-                goomba.y = goomba.y + 1;
-                goomba.goombaSprite.setPosition(goomba.x, goomba.y);
+            // verifica se a seta direita está pressionada
+            else if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+                goomba.animacaoCorrente = goomba.animacaoDireita;
+                if (goomba.x < (map.getWidth() - goomba.goombaSprite.getWidth() - camera.viewportWidth / 2f)){ //??? Como a Camera está sempre centralizada tem que tirar metade ???
+                //if (goomba.x < (map.getWidth() - goomba.goombaSprite.getWidth())){
+                    goomba.x = goomba.x + 1;
+
+                    // Verifica se o goomba está na metade da camera
+                    //if ((goomba.x >= (camera.position.x /2f)) && ((camera.position.x + camera.viewportWidth) < map.getWidth())){
+                    if ((camera.position.x + camera.viewportWidth) < map.getWidth()){
+                        camera.position.x = camera.position.x + 1;
+                    }
+                    goomba.goombaSprite.setPosition(goomba.x, goomba.y);
+                }
             }
-        }
-        // verifica se a seta para baixa está pressionada
-        else if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
-            goomba.animacaoCorrente = goomba.animacaoBaixo;
-            if (goomba.y > 0){
-                goomba.y = goomba.y - 1;
-                goomba.goombaSprite.setPosition(goomba.x, goomba.y);
+            // verifica se a seta para cima está pressionada
+            else if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
+                goomba.animacaoCorrente = goomba.animacaoCima;
+                if (goomba.y < Gdx.graphics.getHeight() - goomba.goombaSprite.getHeight()){
+                    goomba.y = goomba.y + 1;
+                    goomba.goombaSprite.setPosition(goomba.x, goomba.y);
+                }
             }
+            // verifica se a seta para baixa está pressionada
+            else if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+                goomba.animacaoCorrente = goomba.animacaoBaixo;
+                if (goomba.y > 0){
+                    goomba.y = goomba.y - 1;
+                    goomba.goombaSprite.setPosition(goomba.x, goomba.y);
+                }
+            }
+            // Evento de armadilha da pedra
+            if (goomba.x == 300){
+                pedra = new Pedra();
+                pedra.ativarArmadilha(goomba.x, goomba.y, camera.viewportWidth);   
+            }                
+            
+            camera.update();
         }
-        camera.update();
 
     }
     
@@ -112,6 +122,13 @@ public class Game extends ApplicationAdapter {
         princesa.render(batch);
         if (apareceSeta)
             batch.draw(setas, princesa.x, princesa.y + princesa.goombaSprite.getHeight() + 5);
+        if (pedra != null && pedra.isVisivel()){            
+            batch.draw(pedra.getTEXTURA_PEDRA(), pedra.getX(), pedra.getY());
+            pedra.animacaoPedra();
+            // ? Destroi ? o objeto se sua animação tiver chegado ao fim
+            if (!pedra.isVisivel())
+                pedra = null;
+        }
         // Desenha a camera 
         batch.setProjectionMatrix(camera.combined);
         // Finaliza a comunicação com a GPU
@@ -148,6 +165,6 @@ public class Game extends ApplicationAdapter {
         };        
         // Realiza o efeito das setas "piscando" na tela
         Timer.schedule(mostrarObjetivo, 0, 0.5f, 6);      
-    }
-
+    }       
+    
 }
