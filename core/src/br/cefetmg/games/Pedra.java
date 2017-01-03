@@ -8,7 +8,7 @@ public class Pedra {
     private float y;
     private float fimAnimacaoX;
     private boolean visivel;
-    private final Texture TEXTURA_PEDRA = new Texture("pedraTransparent2.png");
+    private final Texture TEXTURA_PEDRA = new Texture("Pedra.png");
     private static final int VELOCIDADE_PEDRA = 2;
     
     public Pedra(){
