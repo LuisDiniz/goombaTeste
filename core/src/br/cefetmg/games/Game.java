@@ -119,12 +119,13 @@ public class Game extends ApplicationAdapter {
         // Desenha o Goomba
         goomba.render(batch);
         // Desenha a princesa
-        princesa.render(batch);
+        princesa.render(batch);     
         if (apareceSeta)
             batch.draw(setas, princesa.x, princesa.y + princesa.goombaSprite.getHeight() + 5);
         if (pedra != null && pedra.isVisivel()){            
-            batch.draw(pedra.getTEXTURA_PEDRA(), pedra.getX(), pedra.getY());
-            pedra.animacaoPedra();
+            // Desenha o Goomba
+            pedra.render(batch);   
+            //batch.draw(pedra.getTEXTURA_PEDRA(), pedra.getX(), pedra.getY());
             // ? Destroi ? o objeto se sua animação tiver chegado ao fim
             if (!pedra.isVisivel())
                 pedra = null;
